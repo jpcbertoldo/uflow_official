@@ -99,11 +99,11 @@ def download_models(args):
     )
     for cat in categories:
         print(f"\nCategory: {cat}")
-        download_category_models(cat, args.force_overwrite)
+        download_category_models(cat, args.force_overwrite, args.ckpts)
 
 
-def download_category_models(category, overwrite):
-    for ckpt in ['auc', 'iou', 'pro']:
+def download_category_models(category, overwrite, ckpts=['auc', 'iou', 'pro']):
+    for ckpt in ckpts:
         print(f"Pre-trained checkpoint for {ckpt}:")
         Path(f"models/{ckpt}").mkdir(exist_ok=True, parents=True)
         url = f"https://drive.google.com/u/1/uc?id={urls[category][ckpt]}&export=download"
@@ -124,7 +124,9 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("-cat", "--categories", default=None, type=str, nargs='+')
     p.add_argument("-overwrite", "--force-overwrite", default=False, type=bool)
+    p.add_argument("--ckpts", default=['auc', 'iou', 'pro'], type=str, nargs='+', choices=['auc', 'iou', 'pro'])
     cmd_args, _ = p.parse_known_args()
+    print(f"{cmd_args=}")
 
     # Execute
     # ------------------------------------------------------------------------------------------------------------------
